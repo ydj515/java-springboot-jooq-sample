@@ -1,0 +1,51 @@
+### 변수 설정
+@id = 1
+@username = user123
+
+### 회원 전체 조회
+GET {{host}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 회원 조회
+GET {{host}}/api/users/{{id}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 회원 param으로 조회
+GET {{host}}/api/users/detail?username={{username}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 회원 생성
+POST {{host}}/api/users
+Content-Type: application/json
+
+{
+  "username": "new-user",
+  "password": "secret123",
+  "name": "New User",
+  "email": "new.user@example.com",
+  "userType": "USER",
+  "trialCount": 0
+}
+
+### 회원 수정
+PUT {{host}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "id": 1,
+  "username": "user123",
+  "password": "password123",
+  "name": "John Doe Updated",
+  "email": "john.updated@example.com",
+  "userType": "USER",
+  "trialCount": 1
+}
+
+### 회원 삭제
+DELETE {{host}}/api/users/{{id}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

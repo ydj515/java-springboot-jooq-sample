@@ -1,0 +1,162 @@
+### 주문 생성 (order_no 자동 생성, lineAmount 서버 계산)
+POST {{host}}/api/orders
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "deliveryRequestedAt": "2024-08-01T18:00:00",
+  "items": [
+    {
+      "productName": "Mechanical Keyboard",
+      "quantity": 1,
+      "unitPrice": 129000
+    },
+    {
+      "productName": "Wrist Rest",
+      "quantity": 2,
+      "unitPrice": 20000
+    }
+  ]
+}
+
+### 주문 전체 조회
+GET {{host}}/api/orders
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### 상태별 주문 조회
+GET {{host}}/api/orders?status=PAID
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### 고객명 prefix 검색
+GET {{host}}/api/orders?customerName=한
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### 최소 금액 + 기간 검색
+GET {{host}}/api/orders/summaries?minTotalAmount=80000&orderedFrom=2024-07-01T00:00:00&orderedTo=2024-07-08T23:59:59
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### 주문 단건 조회
+GET {{host}}/api/orders/1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### follow-up query 기반 주문 단건 조회 (nested-select 대응)
+GET {{host}}/api/orders/3/nested-select
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### follow-up query 기반 주문 목록 조회 (nested-select 대응)
+GET {{host}}/api/orders/nested-select
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### 상태별 주문 전용 조회
+GET {{host}}/api/orders/status/PAID
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### 상태별 주문 요약 조회
+GET {{host}}/api/orders/status/PAID/summaries
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### 주문 상태별 건수 조회
+GET {{host}}/api/orders/status-counts
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### jOOQ batch insert 예제
+POST {{host}}/api/orders/1/items/batch
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productName": "USB Hub",
+      "quantity": 1,
+      "unitPrice": 29000
+    },
+    {
+      "productName": "Laptop Stand",
+      "quantity": 1,
+      "unitPrice": 49000
+    }
+  ]
+}
+
+### 결제 상태 전이 (Level 2: Idempotency-Key 필수)
+POST {{host}}/api/orders/1/pay
+Authorization: Bearer {{accessToken}}
+Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
+Content-Type: application/json
+
+### 결제 재요청 (같은 Idempotency-Key → replay, PG 호출 없음)
+POST {{host}}/api/orders/1/pay
+Authorization: Bearer {{accessToken}}
+Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000
+Content-Type: application/json
+
+### 결제 — Idempotency-Key 누락 (400 IDEMPOTENCY_KEY_REQUIRED 시연)
+POST {{host}}/api/orders/1/pay
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### 취소 (Level 5: Idempotency-Key 필수, reason 선택)
+POST {{host}}/api/orders/2/cancel?reason=단순 변심
+Authorization: Bearer {{accessToken}}
+Idempotency-Key: 660e8400-e29b-41d4-a716-446655440099
+Content-Type: application/json
+
+### 취소 재요청 (같은 Idempotency-Key → replay, PG refund 호출 없음)
+POST {{host}}/api/orders/2/cancel?reason=단순 변심
+Authorization: Bearer {{accessToken}}
+Idempotency-Key: 660e8400-e29b-41d4-a716-446655440099
+Content-Type: application/json
+
+### 취소 - 같은 키 + 다른 reason (409 IDEMPOTENCY_KEY_CONFLICT 시연)
+POST {{host}}/api/orders/2/cancel?reason=배송 지연
+Authorization: Bearer {{accessToken}}
+Idempotency-Key: 660e8400-e29b-41d4-a716-446655440099
+Content-Type: application/json
+
+### 취소 - 같은 키 + 다른 order (409 IDEMPOTENCY_KEY_CONFLICT 시연)
+POST {{host}}/api/orders/1/cancel
+Authorization: Bearer {{accessToken}}
+Idempotency-Key: 660e8400-e29b-41d4-a716-446655440099
+Content-Type: application/json
+
+### 취소 - Idempotency-Key 누락 (400 IDEMPOTENCY_KEY_REQUIRED 시연)
+POST {{host}}/api/orders/4/cancel
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### 배송 상태 전이
+POST {{host}}/api/orders/2/ship
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+### jOOQ batch API 기반 배치 세션 예제
+POST {{host}}/api/orders/1/items/batch-session
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productName": "Docking Station",
+      "quantity": 1,
+      "unitPrice": 159000
+    },
+    {
+      "productName": "USB-C Cable",
+      "quantity": 2,
+      "unitPrice": 15000
+    }
+  ]
+}
