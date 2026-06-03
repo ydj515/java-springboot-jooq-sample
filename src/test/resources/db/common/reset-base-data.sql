@@ -1,0 +1,23 @@
+DELETE FROM processed_events;
+DELETE FROM compensation_tasks;
+DELETE FROM outbox_events;
+DELETE FROM payment_histories;
+DELETE FROM payments;
+DELETE FROM cancellations;
+DELETE FROM purchase_order_items;
+DELETE FROM purchase_orders;
+DELETE FROM customers;
+DELETE FROM users_roles;
+DELETE FROM roles;
+DELETE FROM users;
+
+ALTER TABLE users AUTO_INCREMENT = 1;
+ALTER TABLE roles AUTO_INCREMENT = 1;
+ALTER TABLE customers AUTO_INCREMENT = 1;
+ALTER TABLE purchase_orders AUTO_INCREMENT = 1;
+ALTER TABLE purchase_order_items AUTO_INCREMENT = 1;
+ALTER TABLE payments AUTO_INCREMENT = 1;
+ALTER TABLE payment_histories AUTO_INCREMENT = 1;
+ALTER TABLE outbox_events AUTO_INCREMENT = 1;
+ALTER TABLE compensation_tasks AUTO_INCREMENT = 1;
+ALTER TABLE cancellations AUTO_INCREMENT = 1;

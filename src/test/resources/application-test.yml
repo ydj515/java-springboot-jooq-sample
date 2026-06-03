@@ -1,0 +1,9 @@
+spring:
+
+app:
+  scheduling:
+    enabled: false
+
+logging:
+  level:
+    root: info

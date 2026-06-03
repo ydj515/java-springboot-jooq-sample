@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+app:
+  scheduling:
+    enabled: false
+
+logging:
+  level:
+    root: info
