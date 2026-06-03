@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: java-springboot-jooq-sample
+  profiles:
+    default: local
+  jooq:
+    sql-dialect: mysql
+
+server:
+  port: ${SERVER_PORT:18080}
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY:dGVzdC1qd3Qtc2VjcmV0LXRlc3Qtand0LXNlY3JldC10ZXN0LWp3dC1zZWNyZXQtdGVzdC1qd3Qtc2VjcmV0IQ==}
+    access-token-expiration: 3600000
+
+logging:
+  level:
+    root: info

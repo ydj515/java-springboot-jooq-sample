@@ -1,0 +1,47 @@
+[tools]
+java = "21.0.2"
+gradle = "8.14.4"
+
+[tasks.default]
+description = "Spring Boot 애플리케이션을 실행합니다."
+run = [{ task = "run" }]
+
+[tasks.clean]
+description = "Gradle 빌드 산출물을 정리합니다."
+run = "gradle clean"
+
+[tasks.build]
+description = "프로젝트를 빌드합니다."
+run = "gradle build"
+
+[tasks.check]
+description = "프로젝트 검증 작업을 실행합니다."
+run = "gradle check"
+
+[tasks.test]
+description = "테스트를 실행합니다."
+run = "gradle test"
+
+[tasks.jooq-codegen]
+description = "jOOQ 생성 코드를 갱신합니다."
+run = "gradle jooqCodegen"
+
+[tasks.web-layer-test]
+description = "웹 레이어 슬라이스 테스트를 실행합니다."
+run = "gradle webLayerTest"
+
+[tasks.jooq-repository-test]
+description = "jOOQ 저장소 테스트를 실행합니다."
+run = "gradle jooqRepositoryTest"
+
+[tasks.integration-test]
+description = "MySQL Testcontainers 기반 통합 테스트를 실행합니다."
+run = "gradle integrationTest"
+
+[tasks.verify]
+description = "codegen부터 전체 검증까지 순차 실행합니다."
+run = "gradle clean jooqCodegen test webLayerTest jooqRepositoryTest integrationTest"
+
+[tasks.run]
+description = "Spring Boot 애플리케이션을 실행합니다."
+run = "gradle bootRun"
