@@ -16,4 +16,5 @@ security:
 
 logging:
   level:
+    org.jooq.tools.LoggerListener: DEBUG
     root: info

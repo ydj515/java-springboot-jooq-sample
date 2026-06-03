@@ -7,6 +7,7 @@
 ## 이 저장소에서 보여주는 학습 포인트
 
 - join 기반 aggregate 조회와 row reducer 조립
+- 단순 1:N 조회에서 `MULTISET`과 join reducer 비교. 실제 MySQL SQL과 trade-off는 [jOOQ 패턴 선택 가이드](./jooq-pattern-selection-guide.md)를 참고합니다.
 - follow-up query 기반 조회와 query count 비교
 - 상태 기반 subtype mapping
 - optimistic locking update
