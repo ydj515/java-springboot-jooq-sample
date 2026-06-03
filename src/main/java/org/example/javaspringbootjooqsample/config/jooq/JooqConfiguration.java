@@ -14,7 +14,7 @@ public class JooqConfiguration {
     public DefaultConfigurationCustomizer defaultConfigurationCustomizer(JooqQueryCountListener listener) {
         return configuration -> {
             configuration.set(new DefaultExecuteListenerProvider(listener));
-            configuration.set(new Settings().withRenderSchema(false));
+            configuration.set(new Settings().withRenderSchema(false)); // SQL 렌더링 시 스키마명을 제외
         };
     }
 }
