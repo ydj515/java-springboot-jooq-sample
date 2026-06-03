@@ -1,0 +1,54 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Validate Gradle wrapper
+        continue-on-error: true
+        uses: gradle/actions/wrapper-validation@v3
+
+      - name: Start MySQL for codegen
+        run: docker compose --env-file mysql-8/.env -f mysql-8/docker-compose.yml up -d
+
+      - name: Generate jOOQ sources
+        run: ./gradlew jooqCodegen
+
+      - name: Run unit and fast tests
+        run: ./gradlew test webLayerTest
+
+      - name: Run jOOQ repository tests
+        run: ./gradlew jooqRepositoryTest
+
+      - name: Run integration tests
+        run: ./gradlew integrationTest
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            build/reports/tests/test/
+            build/reports/tests/webLayerTest/
+            build/reports/tests/jooqRepositoryTest/
+            build/reports/tests/integrationTest/
+          if-no-files-found: ignore
