@@ -27,7 +27,7 @@ jobs:
         uses: gradle/actions/wrapper-validation@v3
 
       - name: Start MySQL for codegen
-        run: docker compose --env-file mysql-8/.env -f mysql-8/docker-compose.yml up -d
+        run: docker compose --env-file mysql-8/.env.example -f mysql-8/docker-compose.yml up -d
 
       - name: Generate jOOQ sources
         run: ./gradlew jooqCodegen
